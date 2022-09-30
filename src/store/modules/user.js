@@ -3,8 +3,10 @@ export default {
   namespaced: true,
   state: {
     clientToken: null,
-    AuthCodeToken: '',
-    token: ''
+    AuthCodeToken: null,
+    token: null,
+    userInfo: {},
+    userId: null
   },
 
   mutations: {
@@ -16,6 +18,16 @@ export default {
     },
     token(state, token) {
       state.token = token
+    },
+    SET_USERINFO(state, userInfo) {
+      state.userInfo = userInfo
+    },
+    SET_USERID(state, userId) {
+      state.userId = userId
+    },
+    DEL_TOKEN(state) {
+      state.token = null
+      state.userInfo = {}
     }
   },
   actions: {
@@ -30,6 +42,10 @@ export default {
       const res = await loginAPI(loginData)
       console.log(res)
       context.commit('token', res.data.token)
+      context.commit('SET_USERID', res.data.userId)
+    },
+    logout(context) {
+      context.commit('DEL_TOKEN')
     }
   }
 }

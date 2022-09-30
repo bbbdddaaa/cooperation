@@ -68,7 +68,7 @@ export default {
     }
   },
   async created() {
-    console.log(this)
+    // console.log(this)
     this.$store.dispatch('user/loginAction', Math.random())
   },
   methods: {
@@ -76,13 +76,14 @@ export default {
       try {
         await this.$refs.loginForm.validate()
         this.loading = true
-        this.$store.dispatch('user/login', {
+        await this.$store.dispatch('user/login', {
           loginName: this.loginForm.loginName,
           password: this.loginForm.password,
           code: this.loginForm.code,
           clientToken: this.$store.state.user.AuthCodeToken,
           loginType: 0
         })
+        this.$router.push('/home')
       } finally {
         this.loading = false
       }

@@ -1,50 +1,37 @@
 <template>
   <div class="navbar">
-    <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-
-    <breadcrumb class="breadcrumb-container" />
-
+    <!-- <hamburger class="hamburger-container" /> -->
+    <!-- <breadcrumb class="breadcrumb-container" /> -->
+    <img src="../../assets/common/logoone.png" alt="" class="logoImg">
     <div class="right-menu">
-      <el-dropdown class="avatar-container" trigger="click">
+      <div class="avatar-container">
         <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
+          <img v-if="userInfo.image" :src="userInfo.image" class="user-avatar">
+          <img v-else src="../../assets/common/user.png" class="user-avatar">
+          <span @click="logout"><span style="margin:0 10px">欢迎您, {{ userInfo.userName }}</span> 退出</span>
           <i class="el-icon-caret-bottom" />
         </div>
-        <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <router-link to="/">
-            <el-dropdown-item>
-              Home
-            </el-dropdown-item>
-          </router-link>
-          <a target="_blank" href="https://github.com/PanJiaChen/vue-admin-template/">
-            <el-dropdown-item>Github</el-dropdown-item>
-          </a>
-          <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
-            <el-dropdown-item>Docs</el-dropdown-item>
-          </a>
-          <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">Log Out</span>
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import Breadcrumb from '@/components/Breadcrumb'
-import Hamburger from '@/components/Hamburger'
+// import Breadcrumb from '@/components/Breadcrumb'
+// import Hamburger from '@/components/Hamburger'
 
 export default {
   components: {
-    Breadcrumb,
-    Hamburger
+    // Breadcrumb
+    // Hamburger
   },
+
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar'
+      'avatar',
+      'userInfo'
     ])
   },
   methods: {
@@ -53,7 +40,7 @@ export default {
     },
     async logout() {
       await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      this.$router.push('/login')
     }
   }
 }
@@ -61,12 +48,16 @@ export default {
 
 <style lang="scss" scoped>
 .navbar {
-  height: 50px;
+  height: 60px;
   overflow: hidden;
   position: relative;
-  background: #fff;
+  background: #5373e0;
   box-shadow: 0 1px 4px rgba(0,21,41,.08);
-
+  .logoImg {
+    margin: 10px 0 0 15px;
+    width: 88px;
+    height: 35px;
+  }
   .hamburger-container {
     line-height: 46px;
     height: 100%;
@@ -88,6 +79,7 @@ export default {
     float: right;
     height: 100%;
     line-height: 50px;
+    color: #fff;
 
     &:focus {
       outline: none;
@@ -122,14 +114,15 @@ export default {
           cursor: pointer;
           width: 40px;
           height: 40px;
-          border-radius: 10px;
+          border-radius: 50%;
+          vertical-align: middle;
         }
 
         .el-icon-caret-bottom {
           cursor: pointer;
           position: absolute;
-          right: -20px;
-          top: 25px;
+          right: -15px;
+          top: 20px;
           font-size: 12px;
         }
       }

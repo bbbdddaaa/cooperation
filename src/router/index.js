@@ -5,7 +5,15 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '@/layout'
-
+import task from '@/router/modules/task'
+import node from '@/router/modules/node'
+import vm from '@/router/modules/vm'
+import user from '@/router/modules/user'
+import sku from '@/router/modules/sku'
+import policy from '@/router/modules/policy'
+import order from '@/router/modules/order'
+import report from '@/router/modules/report'
+const asyncRouters = [task, node, vm, user, sku, policy, order, report]
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -46,13 +54,15 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/dashboard',
-    children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
-    }]
+    redirect: '/home',
+    children: [
+      {
+        path: 'home',
+        name: 'home',
+        component: () => import('@/views/home/index'),
+        meta: { title: '帝可得', icon: 'dashboard' }
+      }
+    ]
   },
 
   // 404 page must be placed at the end !!!
@@ -62,7 +72,7 @@ export const constantRoutes = [
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
+  routes: [...constantRoutes, ...asyncRouters]
 })
 
 const router = createRouter()
